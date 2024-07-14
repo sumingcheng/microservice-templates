@@ -11,6 +11,7 @@ import (
 )
 
 func main() {
+	// Config
 	cfg, err := config.Initialization()
 	if err != nil {
 		log.Fatal("Failed to initialize config: ", err.Error())
@@ -28,6 +29,11 @@ func main() {
 	db, err := utils.DBConnect(cfg.DBConfig)
 	if err != nil {
 		zap.S().Fatalf("Failed to connect to MySQL: %v", err.Error())
+		return
+	}
+	// Translator
+	if err = utils.CreateTranslator("zh"); err != nil {
+		zap.S().Fatalf("Failed to create translator: %v", err.Error())
 		return
 	}
 	// Middleware
