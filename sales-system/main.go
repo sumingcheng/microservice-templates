@@ -32,7 +32,7 @@ func main() {
 		return
 	}
 	// Translator
-	if err = utils.CreateTranslator("zh"); err != nil {
+	if err = utils.CreateTranslator(cfg.TransConfig.Locale); err != nil {
 		zap.S().Fatalf("Failed to create translator: %v", err.Error())
 		return
 	}

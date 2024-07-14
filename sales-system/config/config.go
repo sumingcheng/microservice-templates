@@ -21,6 +21,10 @@ type LogConfig struct {
 	Compress   bool   `mapstructure:"compress"`
 }
 
+type TransConfig struct {
+	Locale string `mapstructure:"locale"`
+}
+
 type DBConfig struct {
 	User     string `mapstructure:"user"`
 	PassWord string `mapstructure:"password"`
@@ -37,6 +41,7 @@ type AllowOrigin struct {
 type Config struct {
 	*GinConfig   `mapstructure:"gin"`
 	*DBConfig    `mapstructure:"mysql"`
+	*TransConfig `mapstructure:"translator"`
 	*LogConfig   `mapstructure:"log"`
 	*AllowOrigin `mapstructure:"allow_origin"`
 }
