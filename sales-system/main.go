@@ -8,11 +8,9 @@ import (
 	"microservice/sales-system/config"
 	"microservice/sales-system/middleware"
 	"microservice/sales-system/utils"
-	"os"
 )
 
 func main() {
-	_ = os.Setenv("ENV", "DEV")
 	cfg, err := config.Initialization()
 	if err != nil {
 		log.Fatal("Failed to initialize config: ", err.Error())

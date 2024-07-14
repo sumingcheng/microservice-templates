@@ -30,9 +30,9 @@ func NewLogger(c *config.LogConfig) (*zap.Logger, error) {
 	var cfg zapcore.EncoderConfig
 
 	if isDEV {
-		cfg = zap.NewDevelopmentEncoderConfig()
-	} else {
 		cfg = zap.NewProductionEncoderConfig()
+	} else {
+		cfg = zap.NewDevelopmentEncoderConfig()
 	}
 
 	cfg.EncodeTime = zapcore.ISO8601TimeEncoder

@@ -70,11 +70,12 @@ func Initialization() (*Config, error) {
 func getEnvFile() string {
 	var configFile string
 	isDEV := viper.GetString("ENV") == "DEV"
-	if isDEV {
-		configFile = fmt.Sprintf("./sales-system/config/config-dev.yaml")
-	} else {
-		configFile = fmt.Sprintf("./sales-system/config/config-prod.yaml")
-	}
 
+	if isDEV {
+		configFile = fmt.Sprintf("./sales-system/config/config-prod.yaml")
+	} else {
+		configFile = fmt.Sprintf("./sales-system/config/config-dev.yaml")
+	}
+	fmt.Println("configFile: ", configFile)
 	return configFile
 }
