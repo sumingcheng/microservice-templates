@@ -34,12 +34,15 @@ func DBConnect(c *config.DBConfig) (*gorm.DB, error) {
 	return db, err
 }
 
-func DBClose(db *gorm.DB) {
+func DBClose(db *gorm.DB) (err error) {
 	sqlDB, err := db.DB()
 	if err != nil {
-		log.Fatal("Failed to get database connection: ", err)
-		return
+		return err
 	}
 
-	defer sqlDB.Close()
+	err = sqlDB.Close()
+	if err != nil {
+		return err
+	}
+	return nil
 }
