@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"github.com/spf13/viper"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
@@ -10,7 +11,7 @@ import (
 
 // NewLogger 根据 LoggerConfig 创建一个新的 zap.Logger 实例
 func NewLogger(c *config.LogConfig) (*zap.Logger, error) {
-	env := config.GetEnv(config.FileConfig["ENV"])
+	isDEV := viper.GetString("ENV") == "DEV"
 
 	lumberLogger := &lumberjack.Logger{
 		Filename:   c.FilePath,
@@ -28,7 +29,7 @@ func NewLogger(c *config.LogConfig) (*zap.Logger, error) {
 
 	var cfg zapcore.EncoderConfig
 
-	if env {
+	if isDEV {
 		cfg = zap.NewDevelopmentEncoderConfig()
 	} else {
 		cfg = zap.NewProductionEncoderConfig()

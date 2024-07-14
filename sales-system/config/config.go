@@ -42,14 +42,10 @@ type Config struct {
 }
 
 var cfg = new(Config)
-var FileConfig = map[string]string{
-	"PREFIX": "config",
-	"ENV":    "SALES_SYSTEM_ENV",
-}
 var ZapLevel = zapcore.InfoLevel
 
 func Initialization() (*Config, error) {
-	fmt.Println(getEnvFile())
+	viper.AutomaticEnv()
 	viper.SetConfigFile(getEnvFile())
 	viper.WatchConfig()
 	viper.OnConfigChange(func(e fsnotify.Event) {
@@ -71,19 +67,14 @@ func Initialization() (*Config, error) {
 	return cfg, nil
 }
 
-func GetEnv(env string) bool {
-	viper.AutomaticEnv()
-	return viper.GetBool(env)
-}
-
 func getEnvFile() string {
 	var configFile string
-	isDEV := GetEnv("DEV")
-
+	isDEV := viper.GetString("ENV") == "DEV"
 	if isDEV {
-		configFile = fmt.Sprintf("./sales-system/config/%s-dev.yaml", FileConfig["PREFIX"])
+		configFile = fmt.Sprintf("./sales-system/config/config-dev.yaml")
 	} else {
-		configFile = fmt.Sprintf("./sales-system/config/%s-prod.yaml", FileConfig["PREFIX"])
+		configFile = fmt.Sprintf("./sales-system/config/config-prod.yaml")
 	}
+
 	return configFile
 }
