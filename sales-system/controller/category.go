@@ -2,11 +2,13 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
+	"microservice/sales-system/config"
 	"microservice/sales-system/service"
 )
 
 type Category struct {
 	S *service.Category
+	E *config.CustomError
 }
 
 func (ca *Category) GetList(c *gin.Context) {
