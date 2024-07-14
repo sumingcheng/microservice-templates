@@ -33,10 +33,10 @@ func (ca *Category) Search(c *gin.Context) {
 
 }
 
-func (pr *Category) SearchWitchKeyWord(c *gin.Context) {
+func (ca *Category) SearchWitchKeyWord(c *gin.Context) {
 
 }
 
-func (pr *Category) SearchWitchDate(c *gin.Context) {
+func (ca *Category) SearchWitchDate(c *gin.Context) {
 
 }
