@@ -33,7 +33,7 @@ func main() {
 	}
 	// Middleware
 	r.Use(middleware.Cors(cfg.AllowOrigin))
-	r.Use(middleware.Router(db, r, &config.CustomError{}))
+	r.Use(middleware.Router(db, r, &utils.CustomError{}))
 
 	// Run
 	err = r.Run(cfg.GinConfig.IP + ":" + cfg.GinConfig.Port)

@@ -1,8 +1,4 @@
-package config
-
-import (
-	"microservice/sales-system/utils"
-)
+package utils
 
 type CustomError struct {
 	Name  string `json:"name"`
@@ -23,7 +19,7 @@ func (ce *CustomError) BadParameter(err error) *CustomError {
 	ce.Name = "BadParameter"
 	ce.Code = 1001
 	ce.Msg = "参数传递不合法"
-	ce.Error = utils.TranslateErrors(err)
+	ce.Error = TranslateErrors(err)
 
 	return ce
 }

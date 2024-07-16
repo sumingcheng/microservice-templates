@@ -2,14 +2,14 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
-	"microservice/sales-system/config"
 	"microservice/sales-system/service"
+	"microservice/sales-system/utils"
 	"net/http"
 )
 
 type Category struct {
 	S *service.Category
-	E *config.CustomError
+	E *utils.CustomError
 }
 
 type CateAddBody struct {

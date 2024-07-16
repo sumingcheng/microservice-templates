@@ -3,11 +3,11 @@ package middleware
 import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
-	"microservice/sales-system/config"
 	"microservice/sales-system/router"
+	"microservice/sales-system/utils"
 )
 
-func Router(db *gorm.DB, r *gin.Engine, err *config.CustomError) gin.HandlerFunc {
+func Router(db *gorm.DB, r *gin.Engine, err *utils.CustomError) gin.HandlerFunc {
 	apiRouter := r.Group("/v1")
 
 	return func(context *gin.Context) {

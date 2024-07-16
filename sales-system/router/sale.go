@@ -3,12 +3,12 @@ package router
 import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
-	"microservice/sales-system/config"
 	"microservice/sales-system/controller"
 	"microservice/sales-system/service"
+	"microservice/sales-system/utils"
 )
 
-func Sale(db *gorm.DB, r *gin.RouterGroup, err *config.CustomError) {
+func Sale(db *gorm.DB, r *gin.RouterGroup, err *utils.CustomError) {
 	sale := controller.Category{
 		S: &service.Category{
 			DB: db,
