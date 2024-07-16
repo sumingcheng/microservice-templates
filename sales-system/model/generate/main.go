@@ -40,7 +40,7 @@ func main() {
 	err = db.AutoMigrate(modules...)
 
 	if err != nil {
-		zap.S().Fatalf("Failed to migrate tables: %v", err.Error())
+		`zap.S().Fatalf`("Failed to migrate tables: %v", err.Error())
 		return
 	}
 }

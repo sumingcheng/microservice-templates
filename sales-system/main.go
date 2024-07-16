@@ -31,14 +31,9 @@ func main() {
 		zap.S().Fatalf("Failed to connect to MySQL: %v", err.Error())
 		return
 	}
-	// Translator
-	if err = utils.CreateTranslator(cfg.TransConfig.Locale); err != nil {
-		zap.S().Fatalf("Failed to create translator: %v", err.Error())
-		return
-	}
 	// Middleware
 	r.Use(middleware.Cors(cfg.AllowOrigin))
-	r.Use(middleware.Router(db, r))
+	r.Use(middleware.Router(db, r, &config.CustomError{}))
 
 	// Run
 	err = r.Run(cfg.GinConfig.IP + ":" + cfg.GinConfig.Port)
