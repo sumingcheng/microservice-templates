@@ -53,6 +53,20 @@ func (ca *Category) Add(c *gin.Context) {
 		return
 	}
 
+	// 检查分类名是否已存在
+	exists, err := ca.S.Exists(body.Name)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, ca.E.BadParameter(err))
+		return
+	}
+	if exists {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code": 1,
+			"msg":  "分类名已存在",
+		})
+		return
+	}
+
 	id, err := ca.S.Add(body.Name)
 	if err != nil || id == 0 {
 		c.JSON(http.StatusInternalServerError, ca.E.CreateDataFailed(err))
@@ -60,10 +74,9 @@ func (ca *Category) Add(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"name": "success",
 		"code": 0,
 		"msg":  "ok",
-		"err":  utils.TranslateErrors(err),
+		"data": id,
 	})
 }
 

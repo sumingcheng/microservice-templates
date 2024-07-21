@@ -24,8 +24,8 @@ func (ca *Category) Add(name string) (int32, error) {
 }
 
 type CateList struct {
-	Count int64 `json:"count"`
-	Data  []model.Category
+	Count int64            `json:"count"`
+	Data  []model.Category `json:"data"`
 }
 
 func (ca *Category) GetList(pageSize, pageNumber int) (*CateList, error) {
@@ -43,4 +43,15 @@ func (ca *Category) GetList(pageSize, pageNumber int) (*CateList, error) {
 		Count: count,
 		Data:  cateList,
 	}, nil
+}
+
+func (ca *Category) Exists(name string) (bool, error) {
+	var count int64
+	result := ca.DB.Model(&model.Category{}).Where("cate_name = ?", name).Count(&count)
+
+	if result.Error != nil {
+		return false, result.Error
+	}
+
+	return count > 0, nil
 }
