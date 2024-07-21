@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"gorm.io/gorm"
 	"microservice/sales-system/model"
 	"microservice/sales-system/utils"
@@ -70,6 +71,21 @@ func (ca *Category) GetOne(id int) (*model.Category, error) {
 func (ca *Category) Update(id int32, name string) (int32, error) {
 	result := ca.DB.Model(&model.Category{}).Where("id = ?", id).Update("cate_name", name)
 
+	if result.Error != nil {
+		return 0, result.Error
+	}
+
+	if result.RowsAffected == 0 {
+		return 0, nil
+	}
+
+	return id, nil
+}
+
+func (ca *Category) Delete(id int32) (int32, error) {
+	// Unscoped 硬删除
+	result := ca.DB.Where("id = ?", id).Unscoped().Delete(&model.Category{})
+	fmt.Printf("%+v", result)
 	if result.Error != nil {
 		return 0, result.Error
 	}

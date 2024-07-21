@@ -47,3 +47,19 @@ func (ce *CustomError) UpdateDataFailed(err error) *CustomError {
 	ce.Error = err.Error()
 	return ce
 }
+
+func (ce *CustomError) DeleteDataFailed(err error) *CustomError {
+	ce.Name = "DELETE_DATA_FAILED"
+	ce.Code = 1005
+	ce.Msg = "数据删除失败"
+	ce.Error = err.Error()
+	return ce
+}
+
+func (ce *CustomError) InvalidId(err error) *CustomError {
+	ce.Name = "INVALID_ID"
+	ce.Code = 1006
+	ce.Msg = "id 不存在"
+	ce.Error = "nil"
+	return ce
+}
