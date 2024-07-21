@@ -66,3 +66,17 @@ func (ca *Category) GetOne(id int) (*model.Category, error) {
 
 	return &category, nil
 }
+
+func (ca *Category) Update(id int32, name string) (int32, error) {
+	result := ca.DB.Model(&model.Category{}).Where("id = ?", id).Update("cate_name", name)
+
+	if result.Error != nil {
+		return 0, result.Error
+	}
+
+	if result.RowsAffected == 0 {
+		return 0, nil
+	}
+
+	return id, nil
+}

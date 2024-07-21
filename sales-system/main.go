@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
+	"github.com/go-playground/validator/v10"
 	"go.uber.org/zap"
 	"log"
 	"microservice/sales-system/config"
@@ -18,20 +20,31 @@ func main() {
 		log.Fatal("Failed to initialize config: ", err.Error())
 		return
 	}
+
 	// Logger
 	_, err = utils.NewLogger(cfg.LogConfig)
 	if err != nil {
 		zap.S().Fatalf("Failed to initialize logger: %v", err.Error())
 		return
 	}
-	// GIN
-	r := gin.Default()
+
 	// MySQL
 	db, err := utils.DBConnect(cfg.DBConfig)
 	if err != nil {
 		zap.S().Fatalf("Failed to connect to MySQL: %v", err.Error())
 		return
 	}
+
+	// 注册自定义验证规则
+	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
+		utils.RegisterCustomValidations(v)
+	} else {
+		zap.S().Fatalf("Failed to assert validator engine type")
+		return
+	}
+
+	// GIN
+	r := gin.Default()
 	// Middleware
 	r.Use(middleware.Cors(cfg.AllowOrigin))
 	// Router

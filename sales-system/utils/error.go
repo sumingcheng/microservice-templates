@@ -39,3 +39,11 @@ func (ce *CustomError) QueryDataFailed(err error) *CustomError {
 	ce.Error = err.Error()
 	return ce
 }
+
+func (ce *CustomError) UpdateDataFailed(err error) *CustomError {
+	ce.Name = "UPDATE_DATA_FAILED"
+	ce.Code = 1004
+	ce.Msg = "数据更新失败"
+	ce.Error = err.Error()
+	return ce
+}
