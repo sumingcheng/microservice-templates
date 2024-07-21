@@ -55,3 +55,14 @@ func (ca *Category) Exists(name string) (bool, error) {
 
 	return count > 0, nil
 }
+
+func (ca *Category) GetOne(id int) (*model.Category, error) {
+	var category model.Category
+	result := ca.DB.Where("id = ?", id).First(&category)
+
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return &category, nil
+}

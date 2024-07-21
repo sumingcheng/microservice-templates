@@ -43,7 +43,23 @@ func (ca *Category) GetList(c *gin.Context) {
 }
 
 func (ca *Category) GetOne(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ca.E.BadParameter(err))
+		return
+	}
 
+	data, err := ca.S.GetOne(id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, ca.E.QueryDataFailed(err))
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"code": 0,
+		"msg":  "ok",
+		"data": data,
+	})
 }
 
 func (ca *Category) Add(c *gin.Context) {

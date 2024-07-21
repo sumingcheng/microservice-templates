@@ -7,6 +7,7 @@ import (
 	"log"
 	"microservice/sales-system/config"
 	"microservice/sales-system/middleware"
+	"microservice/sales-system/router"
 	"microservice/sales-system/utils"
 )
 
@@ -33,7 +34,11 @@ func main() {
 	}
 	// Middleware
 	r.Use(middleware.Cors(cfg.AllowOrigin))
-	r.Use(middleware.Router(db, r, &utils.CustomError{}))
+	// Router
+	apiRouter := r.Group("/v1")
+	router.Category(db, apiRouter, &utils.CustomError{})
+	router.Product(db, apiRouter, &utils.CustomError{})
+	router.Sale(db, apiRouter, &utils.CustomError{})
 
 	// Run
 	err = r.Run(cfg.GinConfig.IP + ":" + cfg.GinConfig.Port)
