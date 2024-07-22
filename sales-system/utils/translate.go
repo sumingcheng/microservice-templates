@@ -29,9 +29,9 @@ func transInit(locale string) error {
 		enT := en.New()
 		uni := ut.New(enT, zhT, enT)
 
-		var ok bool
-		trans, ok = uni.GetTranslator(locale)
+		trans, ok := uni.GetTranslator(locale)
 		if !ok {
+			zap.S().Fatalf("uni.GetTranslator(%s) failed", locale)
 			return fmt.Errorf("uni.GetTranslator(%s) failed", locale)
 		}
 
