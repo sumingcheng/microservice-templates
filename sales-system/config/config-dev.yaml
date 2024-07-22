@@ -23,5 +23,6 @@ log:
 allow_origin:
   origins:
     - "http://localhost:5137"
-    - "http://localhost:8080"
     - "http://localhost:3000"
+    - "http://127.0.0.1:5137"
+    - "http://127.0.0.1:3000"
