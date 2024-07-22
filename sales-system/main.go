@@ -3,8 +3,6 @@ package main
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
-	"github.com/go-playground/validator/v10"
 	"go.uber.org/zap"
 	"log"
 	"microservice/sales-system/config"
@@ -37,13 +35,7 @@ func main() {
 	}
 
 	// 注册自定义验证规则
-	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
-		err := validate.RegisterValidations(v)
-		if err != nil {
-			zap.S().Fatalf("Failed to register custom validations: %v", err.Error())
-			return
-		}
-	}
+	validate.SetValidate()
 
 	// GIN
 	r := gin.Default()

@@ -27,15 +27,6 @@ func RegisterValidations(v *validator.Validate) error {
 	return nil
 }
 
-func regFunc(ut ut.Translator) error {
-	return ut.Add("is-phone", "手机号格式不正确", true)
-}
-
-func transFunc(ut ut.Translator, fe validator.FieldError) string {
-	t, _ := ut.T("is-phone", fe.Field())
-	return t
-}
-
 func RegisterValTrans(v *validator.Validate, trans ut.Translator) error {
 	if err := RegisterValidations(v); err != nil {
 		return err
@@ -44,4 +35,13 @@ func RegisterValTrans(v *validator.Validate, trans ut.Translator) error {
 		return err
 	}
 	return nil
+}
+
+func regFunc(ut ut.Translator) error {
+	return ut.Add("is-phone", "手机号格式不正确", true)
+}
+
+func transFunc(ut ut.Translator, fe validator.FieldError) string {
+	t, _ := ut.T("is-phone", fe.Field())
+	return t
 }

@@ -17,12 +17,6 @@ import (
 
 var trans ut.Translator
 
-func init() {
-	if err := TransInit("zh"); err != nil {
-		zap.S().Fatalf("Failed to initialize translator: %v", err)
-	}
-}
-
 func TransInit(locale string) error {
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
 		zhT := zh.New()
@@ -62,17 +56,6 @@ func TransInit(locale string) error {
 
 	zap.S().Error("Failed to assert Validator")
 	return fmt.Errorf("failed to assert Validator")
-}
-
-// 注册函数
-func registrationFunc(ut ut.Translator) error {
-	return ut.Add("is-phone", "电话号码格式不正确", true) // 这里定义错误信息
-}
-
-// 翻译函数
-func translateFunc(ut ut.Translator, fe validator.FieldError) string {
-	t, _ := ut.T("is-phone", fe.Field())
-	return t
 }
 
 func TranslateErrors(err error) string {
