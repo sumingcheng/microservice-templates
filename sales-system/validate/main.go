@@ -12,7 +12,7 @@ func RegisterCustomValidations(v *validator.Validate) {
 	}
 
 	for tag, fn := range validations {
-		if err := RegisterValidation(v, tag, fn); err != nil {
+		if err := v.RegisterValidation(tag, fn); err != nil {
 			zap.S().Errorf("Error registering validation for %s: %v", tag, err)
 		}
 	}

@@ -13,10 +13,6 @@ type Category struct {
 	E *utils.CustomError
 }
 
-type CateAddBody struct {
-	Name string `json:"name" binding:"required"`
-}
-
 func (ce *Category) GetList(c *gin.Context) {
 	pageSize, pnErr := strconv.Atoi(c.Param("page_size"))
 	if pnErr != nil {
@@ -60,6 +56,10 @@ func (ce *Category) GetOne(c *gin.Context) {
 		"msg":  "ok",
 		"data": data,
 	})
+}
+
+type CateAddBody struct {
+	Name string `json:"name" binding:"required,min=2"`
 }
 
 func (ce *Category) Add(c *gin.Context) {

@@ -19,7 +19,3 @@ func IsPasswordValid(fl validator.FieldLevel) bool {
 	password := fl.Field().String()
 	return NumberRegex.MatchString(password) && LetterRegex.MatchString(password)
 }
-
-func RegisterValidation(v *validator.Validate, tag string, fn validator.Func) error {
-	return v.RegisterValidation(tag, fn)
-}

@@ -18,18 +18,18 @@ import (
 var trans ut.Translator
 
 func init() {
-	if err := transInit("zh"); err != nil {
+	if err := TransInit("zh"); err != nil {
 		zap.S().Fatalf("Failed to initialize translator: %v", err)
 	}
 }
 
-func transInit(locale string) error {
+func TransInit(locale string) error {
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
 		zhT := zh.New()
 		enT := en.New()
 		uni := ut.New(enT, zhT, enT)
 
-		trans, ok := uni.GetTranslator(locale)
+		trans, ok = uni.GetTranslator(locale)
 		if !ok {
 			zap.S().Fatalf("uni.GetTranslator(%s) failed", locale)
 			return fmt.Errorf("uni.GetTranslator(%s) failed", locale)
@@ -44,7 +44,6 @@ func transInit(locale string) error {
 			return name
 		})
 
-		// Register translation based on locale
 		switch locale {
 		case "zh":
 			return chTranslations.RegisterDefaultTranslations(v, trans)
@@ -55,18 +54,25 @@ func transInit(locale string) error {
 		}
 	}
 
+	zap.S().Error("Failed to assert Validator")
 	return fmt.Errorf("failed to assert Validator")
 }
 
 func TranslateErrors(err error) string {
+	if err == nil {
+		return ""
+	}
+
 	var errs validator.ValidationErrors
 	if errors.As(err, &errs) {
 		var errMessages []string
 		for _, e := range errs {
 			translatedMsg := e.Translate(trans)
+			fmt.Println("translatedMsg: ", translatedMsg)
 			errMessages = append(errMessages, translatedMsg)
 		}
-		return strings.Join(errMessages, ", ")
+
+		return strings.Join(errMessages, "; ")
 	}
 	return err.Error()
 }
