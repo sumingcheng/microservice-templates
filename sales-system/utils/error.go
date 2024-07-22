@@ -58,7 +58,7 @@ func (ce *CustomError) DeleteDataFailed(err error) *CustomError {
 	return ce
 }
 
-func (ce *CustomError) InvalidId(err error) *CustomError {
+func (ce *CustomError) InvalidId() *CustomError {
 	ce.Name = "INVALID_ID"
 	ce.Code = 1006
 	ce.Msg = "id 不存在"

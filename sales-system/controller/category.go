@@ -115,7 +115,7 @@ func (ce *Category) Update(c *gin.Context) {
 	}
 
 	if id == 0 {
-		c.JSON(http.StatusOK, ce.E.InvalidId(err))
+		c.JSON(http.StatusOK, ce.E.InvalidId())
 		return
 	}
 
@@ -144,7 +144,7 @@ func (ce *Category) Delete(c *gin.Context) {
 	}
 
 	if id == 0 {
-		c.JSON(http.StatusOK, ce.E.InvalidId(err))
+		c.JSON(http.StatusOK, ce.E.InvalidId())
 		return
 	}
 
