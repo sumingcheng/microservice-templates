@@ -159,6 +159,23 @@ func (ce *Category) Search(c *gin.Context) {
 
 }
 
+type CateValidateBody struct {
+	Phone string `json:"phone" binding:"required,is-phone"`
+}
+
+func (ce *Category) Validate(c *gin.Context) {
+	var body CateValidateBody
+	if err := c.ShouldBindJSON(&body); err != nil {
+		c.JSON(http.StatusOK, ce.E.BadParameter(err))
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"code": 0,
+		"msg":  "ok",
+	})
+}
+
 func (ce *Category) SearchWitchKeyWord(c *gin.Context) {
 
 }

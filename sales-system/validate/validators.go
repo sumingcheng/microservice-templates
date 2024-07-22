@@ -1,4 +1,4 @@
-package utils
+package validate
 
 import (
 	"github.com/go-playground/validator/v10"
@@ -21,19 +21,19 @@ func IsPasswordValid(fl validator.FieldLevel) bool {
 	return numberRegex.MatchString(password) && letterRegex.MatchString(password)
 }
 
-func registerValidation(v *validator.Validate, tag string, fn validator.Func) {
-	if err := v.RegisterValidation(tag, fn); err != nil {
-		zap.S().Fatalf("Error registering validation for %s: %v", tag, err)
-	}
+func registerValidation(v *validator.Validate, tag string, fn validator.Func) error {
+	return v.RegisterValidation(tag, fn)
 }
 
 func RegisterCustomValidations(v *validator.Validate) {
 	validations := map[string]validator.Func{
-		"is-valid-phone":    IsValidPhone,
-		"is-password-valid": IsPasswordValid,
+		"is-phone":    IsValidPhone,
+		"is-password": IsPasswordValid,
 	}
 
 	for tag, fn := range validations {
-		registerValidation(v, tag, fn)
+		if err := registerValidation(v, tag, fn); err != nil {
+			zap.S().Errorf("Error registering validation for %s: %v", tag, err)
+		}
 	}
 }

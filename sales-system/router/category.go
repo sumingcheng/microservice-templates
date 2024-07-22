@@ -23,6 +23,7 @@ func Category(db *gorm.DB, r *gin.RouterGroup, err *utils.CustomError) {
 			POST("/add", category.Add).
 			POST("/update", category.Update).
 			POST("/delete", category.Delete).
-			POST("/search", category.Search)
+			POST("/search", category.Search).
+			POST("/validate", category.Validate)
 	}
 }

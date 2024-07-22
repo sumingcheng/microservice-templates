@@ -1,5 +1,7 @@
 package utils
 
+import "microservice/sales-system/validate"
+
 type CustomError struct {
 	Name  string `json:"name"`
 	Code  int    `json:"code"`
@@ -19,7 +21,7 @@ func (ce *CustomError) BadParameter(err error) *CustomError {
 	ce.Name = "BadParameter"
 	ce.Code = 1001
 	ce.Msg = "参数传递不合法"
-	ce.Error = TranslateErrors(err)
+	ce.Error = validate.TranslateErrors(err)
 
 	return ce
 }

@@ -11,6 +11,7 @@ import (
 	"microservice/sales-system/middleware"
 	"microservice/sales-system/router"
 	"microservice/sales-system/utils"
+	"microservice/sales-system/validate"
 )
 
 func main() {
@@ -37,7 +38,7 @@ func main() {
 
 	// 注册自定义验证规则
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
-		utils.RegisterCustomValidations(v)
+		validate.RegisterCustomValidations(v)
 	} else {
 		zap.S().Fatalf("Failed to assert validator engine type")
 		return
