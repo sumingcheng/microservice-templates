@@ -28,11 +28,17 @@ func TransInit(locale string) error {
 		zhT := zh.New()
 		enT := en.New()
 		uni := ut.New(enT, zhT, enT)
-
 		trans, ok = uni.GetTranslator(locale)
+
 		if !ok {
 			zap.S().Fatalf("uni.GetTranslator(%s) failed", locale)
 			return fmt.Errorf("uni.GetTranslator(%s) failed", locale)
+		}
+
+		// 注册自定义验证规则及其翻译
+		if err := RegisterValTrans(v, trans); err != nil {
+			zap.S().Errorf("Failed to register validation translations: %v", err)
+			return err
 		}
 
 		// 使用 JSON 标签作为字段名称
@@ -58,6 +64,17 @@ func TransInit(locale string) error {
 	return fmt.Errorf("failed to assert Validator")
 }
 
+// 注册函数
+func registrationFunc(ut ut.Translator) error {
+	return ut.Add("is-phone", "电话号码格式不正确", true) // 这里定义错误信息
+}
+
+// 翻译函数
+func translateFunc(ut ut.Translator, fe validator.FieldError) string {
+	t, _ := ut.T("is-phone", fe.Field())
+	return t
+}
+
 func TranslateErrors(err error) string {
 	if err == nil {
 		return ""
@@ -68,7 +85,6 @@ func TranslateErrors(err error) string {
 		var errMessages []string
 		for _, e := range errs {
 			translatedMsg := e.Translate(trans)
-			fmt.Println("translatedMsg: ", translatedMsg)
 			errMessages = append(errMessages, translatedMsg)
 		}
 

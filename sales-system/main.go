@@ -38,10 +38,11 @@ func main() {
 
 	// 注册自定义验证规则
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
-		validate.RegisterCustomValidations(v)
-	} else {
-		zap.S().Fatalf("Failed to assert validator engine type")
-		return
+		err := validate.RegisterValidations(v)
+		if err != nil {
+			zap.S().Fatalf("Failed to register custom validations: %v", err.Error())
+			return
+		}
 	}
 
 	// GIN
