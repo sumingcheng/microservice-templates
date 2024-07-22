@@ -48,10 +48,7 @@ func main() {
 	// Middleware
 	r.Use(middleware.Cors(cfg.AllowOrigin))
 	// Router
-	apiRouter := r.Group("/v1")
-	router.Category(db, apiRouter, &utils.CustomError{})
-	router.Product(db, apiRouter, &utils.CustomError{})
-	router.Sale(db, apiRouter, &utils.CustomError{})
+	router.SetRouter(db, r)
 
 	// Run
 	err = r.Run(cfg.GinConfig.IP + ":" + cfg.GinConfig.Port)
