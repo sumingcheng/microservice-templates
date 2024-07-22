@@ -11,6 +11,7 @@ import (
 	enTranslations "github.com/go-playground/validator/v10/translations/en"
 	chTranslations "github.com/go-playground/validator/v10/translations/zh"
 	"go.uber.org/zap"
+	"reflect"
 	"strings"
 )
 
@@ -24,15 +25,24 @@ func init() {
 
 func transInit(locale string) error {
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
-		zhT := zh.New()              // Chinese translator
-		enT := en.New()              // English translator
-		uni := ut.New(enT, zhT, enT) // Universal translator
+		zhT := zh.New()
+		enT := en.New()
+		uni := ut.New(enT, zhT, enT)
 
 		var ok bool
 		trans, ok = uni.GetTranslator(locale)
 		if !ok {
 			return fmt.Errorf("uni.GetTranslator(%s) failed", locale)
 		}
+
+		// 使用 JSON 标签作为字段名称
+		v.RegisterTagNameFunc(func(fld reflect.StructField) string {
+			name := strings.SplitN(fld.Tag.Get("json"), ",", 2)[0] // 获取 json 标签的第一部分
+			if name == "-" {
+				return "" // 如果标签是 "-"，则不使用任何名称
+			}
+			return name
+		})
 
 		// Register translation based on locale
 		switch locale {
