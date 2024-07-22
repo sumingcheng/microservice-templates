@@ -18,7 +18,7 @@ func (ce *CustomError) Success() *CustomError {
 }
 
 func (ce *CustomError) BadParameter(err error) *CustomError {
-	ce.Name = "BadParameter"
+	ce.Name = "BAD_PARAMETER"
 	ce.Code = 1001
 	ce.Msg = "参数传递不合法"
 	ce.Error = validate.TranslateErrors(err)
